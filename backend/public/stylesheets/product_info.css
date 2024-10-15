@@ -1,0 +1,120 @@
+:root {
+    --side-padding:16px;
+}
+
+
+body{
+    background: #fff4f3;
+    font-family: 'Poppins', sans-serif;
+    padding-bottom: 100px;
+}
+.color-primary-dark{
+    color:#ffa69c;
+}
+.work-space{
+    flex: 1;
+    padding:0 10% 0 10%;
+    height: 100vh;
+    overflow: scroll;
+}
+.card{
+    background-color: white;
+    box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+.mother{
+    display: flex;
+}
+.text-style-bold{
+    font-weight: bolder;
+}
+.dz-image img{
+    border-radius: 2px;
+}
+.form-text-input,.form-select{
+    width: 100%;
+    border-radius: 2px;
+    padding: 8px;
+    outline: none;
+    border: 1px solid lightgray;
+}
+.form-text-input::placeholder{
+    color:#ffc9c3;
+}
+.form-text-input:focus,.form-select:focus{
+    border:1px solid #ffa69c
+}
+
+[contenteditable=true]:empty:before{
+    content: attr(placeholder);
+    pointer-events: none;
+    color:#ffc9c3;
+    display: block; /* For Firefox */
+}
+.work-space{
+    width: 50vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+.container{
+    width: 100%;
+    border-top: 1px solid #ffc9c3;
+    border-top: 1px solid #ffc9c3;
+    padding: var(--side-padding);
+}
+.variant-option-container{
+    border-bottom: 1px solid #ffc9c3;
+    padding-bottom: 16px;
+    padding-top: 16px;
+    display: flex;
+
+}
+.small-text-button{
+    color:maroon;
+    width: 100%;
+    text-align: right;
+}
+
+.variant-option-container .first-part{
+    width:100px;
+    margin-right: 16px;
+}
+.variant-option-container .second-part{
+    flex: 1;
+}
+
+.variant-option-container .second-part span{
+    cursor: pointer;
+}
+
+
+.black-button{
+    background-color: rgba(0,0,0,1);
+    transition: 0.8s ease linear;
+}
+.black-button:hover{
+    background-color:rgba(0,0,0,0.8) ;
+}
+
+.subscript{
+    color:#ffa69c;
+    font-size: 10px;
+
+}
+
+
+
+@media only screen and (max-width: 640px) {
+
+    :root{
+        --side-padding: 8px;
+    }
+    .work-space{
+        width: 100%;
+
+    }
+
+    .card{
+        border-radius: 0;
+    }
+}

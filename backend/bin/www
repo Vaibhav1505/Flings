@@ -1,0 +1,88 @@
+const cluster = require('cluster');
+const http = require('http');
+const JWT = require('jsonwebtoken');
+const io = require('socket.io');
+const Match = require('../schema/match');
+const mongoose = require('mongoose');
+const app = require('../app');
+const cors = require('cors');
+
+const SECRET = `MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGWmJonqF90EpI9qTUiTK//Uk9XI
+OWauYNNpVjOqHrJ5PwSNHsrd0ncNisObnCh0y027vjbqlkFNVSGBrWxF6+VgwBNs
+iC6ZSnIxzc2pHyY+eKZvHgDib2XPn948Hpl4XMZndO6Kq+FmtsNjc4JILve/056T
+OtRod6YApFYI0/XZAgMBAAE=`;
+
+const server = http.createServer(app);
+const socketServer = io(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  },
+});
+
+app.use(cors());
+
+socketServer.use((socket, next) => {
+  const token = socket.handshake.query.token;
+  
+  if (!token) return next(new Error('Authentication error'));
+
+  JWT.verify(token, SECRET, (err, decoded) => {
+    if (err) return next(new Error('Authentication error'));
+    
+	// Store user info in the socket object for later use.
+	socket.user = decoded;
+	next();
+	});
+});
+
+socketServer.on('connection', (socket) => {
+	console.log(`User connected: ${socket.user._id}`);
+	socket.join(socket.user._id);
+
+	// Handle chat messages
+	socket.on('sendMessage', async ({ message, to }) => {
+		try {
+			const match = await Match.findOne({
+				users: { $all: [socket.user._id, mongoose.Types.ObjectId(to)] },
+			});
+
+			if (match) { 
+				socket.to(to).emit('getResponse', { message, from: socket.user._id });
+			} else { 
+				console.log('Unauthorized message attempt'); 
+			}
+		} catch (error) { 
+			console.error(`Error sending message: ${error.message}`); 
+		}
+	});
+
+	// Handle WebRTC signaling events
+	socket.on('offer', (data) => { 
+		socket.to(data.targetUserID).emit('offer', data); 
+	});
+
+	socket.on('answer', (data) => { 
+		socket.to(data.targetUserID).emit('answer', data); 
+	});
+
+	socket.on('candidate', (data) => { 
+		socket.to(data.targetUserID).emit('candidate', data); 
+	});
+
+	socket.on('disconnect', () => { 
+		console.log(`User disconnected: ${socket.user._id}`); 
+	});
+});
+
+if (cluster.isPrimary) { 
+	for (let i = 0; i < require('os').cpus().length; i++) cluster.fork(); 
+
+	cluster.on('exit', (worker) => console.log(`Worker ${worker.process.pid} died`)); 
+} else { 
+	server.listen(5000, () => console.log('Server running on port 5000')); 
+}
+
+module.exports = { io };

@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins" , sans-serif;
+}
+
+:root{
+    --generalPadding:16px;
+}
+
+body{
+    background: #fff4f3;
+    font-family: 'Poppins', sans-serif;
+}
+.progress-bar-container {
+    width: 100%;
+    margin: auto;
+}
+
+.progress-bar {
+    height: 4px;
+    background-color: #ffc9c3;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-bar-value {
+    width: 100%;
+    height: 100%;
+    background-color: #d08880;
+    animation: indeterminateAnimation 1s infinite linear;
+    transform-origin: 0% 50%;
+}
+
+@keyframes indeterminateAnimation {
+    0% {
+        transform:  translateX(0) scaleX(0);
+    }
+    50% {
+        transform:  translateX(0) scaleX(0.4);
+    }
+    100% {
+        transform:  translateX(100%) scaleX(0.5);
+    }
+}
+
+.page-title{
+    color:#ffa69c;
+    font-weight: 800;
+    text-align: center;
+}
+
+.work-space{
+    width: 300px;
+    margin-left: auto;
+    margin-right:auto;
+}
+.card{
+    padding: 16px;
+    background-color: white;
+    box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+.button{
+    border-radius: 4px;
+    width: 100%;
+    color:white;
+    border:none;
+    cursor:pointer;
+    padding: 8px;
+    align-items: center;
+    transition: all 0.4s ease;
+    background: #ffa69c;
+}
+
+.button:hover{
+    background:#d08880;
+    color:white;
+}
+input{
+    width: 100%;
+    border:1px solid lightgrey;
+    border-radius:2px;
+    outline: none;
+    padding: 8px;
+}
+input:focus{
+    border:1px solid #ffc9c3;
+}
+
+@media only screen and (max-width: 840px) {
+    .work-space{
+        padding: 12px;
+        width: 100%;
+    }
+
+}

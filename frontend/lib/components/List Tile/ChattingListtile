@@ -1,0 +1,27 @@
+// ListView.builder(
+              //     itemCount: 0,
+              //     itemBuilder: (context, index) {
+              //       return Padding(
+              //         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              //         child: ListTile(
+              //           tileColor: Colors.black,
+              //           shape: RoundedRectangleBorder(
+              //               side: BorderSide(color: Colors.black),
+              //               borderRadius: BorderRadius.all(
+              //                 Radius.circular(15),
+              //               )),
+              //           leading: CircleAvatar(
+              //             backgroundImage: NetworkImage(
+              //                 'https://imgs.search.brave.com/cZOIIGYKdZ_R7_epmNMJdLRz2z_7NWzYOPNPAtWwjas/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL2htZy1wcm9k/L2ltYWdlcy9yb2Jl/cnQtcGF0dGluc29u/LWFzLWJydWNlLXdh/eW5lLWJhdG1hbi1p/bi10aGUtYmF0bWFu/LTE2NDUxODcxMTQu/anBnP2Nyb3A9MC40/NzB4dzoxLjAweGg7/MC41MTB4dywwJnJl/c2l6ZT0zNjA6Kg'),
+              //           ),
+              //           title: Text("Bruce Bhaiya", style: whiteBoldText),
+              //           subtitle: Text(
+              //             "This is Gotham",
+              //             style: greyNormalText.copyWith(fontSize: 12),
+              //           ),
+              //           trailing: Badge(
+              //             label: Text("1"),
+              //           ),
+              //         ),
+              //       );
+              //     }),

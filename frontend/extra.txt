@@ -1,0 +1,780 @@
+ ListTile(
+      tileColor: Colors.transparent,
+      leading: icon,
+      title: Text(cardTitle),
+    );
+
+//JSON ENCODE
+import 'dart:convert';
+
+void main() {
+  final products = [
+    {'id': 1, 'name': 'Product #1'},
+    {'id': 2, 'name': 'Product #2'}
+  ];
+
+  print(json.encode(products));
+}
+O/P==>
+[{"id":1,"name":"Product #1"},{"id":2,"name":"Product #2"}]
+
+
+//JSON DECODE
+void main() {
+  const String responseData =
+      '[{"id":1,"name":"Product #1"},{"id":2,"name":"Product #2"}]';
+
+  final products = json.decode(responseData);
+
+  if (kDebugMode) {
+    // Print the type of "products"
+    print(products.runtimeType);
+
+    // Print the name of the second product in the list
+    print(products[1]['name']);
+  }
+}
+O/P==>
+List<dynamic>
+Product #2
+
+
+
+//GET REQUEST
+ void fetchUserData() async {
+    print("Fetching User Data");
+    const url = 'https://randomuser.me/api/?results=50';
+    final baseURL = Uri.parse(url);
+    final res = await http.get(baseURL);
+    final body = res.body;
+    final jsonData = jsonDecode(body);
+    final results = jsonData['results'] as List<dynamic>;
+
+    setState(() {
+      users = results.map((e) {
+        final username = Username(
+            title: e['name']['title'],
+            first: e['name']['first'],
+            last: e['name']['last']);
+
+        return User(
+            email: e['email'],
+            gender: e['gender'],
+            phone: e['phone'],
+            nat: e["nat"],
+            name: username);
+      }).toList();
+    });
+    print("Fetching Completed");
+  }
+
+class you{
+
+String name;
+Strnig age
+
+  you({ required this.name,required this.age})
+}
+
+ Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const OTPFillingPage(),
+              settings: RouteSettings(
+                arguments: phoneNumber.text,
+              ),
+            ));
+
+
+
+            final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final jsonDecodedData = jsonDecode(args.toString());
+    final phone = jsonDecodedData['phone'];
+    Future<void> matchOTP(String otp) async {
+      print("otp function");
+
+      if (otp.isNotEmpty) {
+        var respones = await http.post(
+            Uri.parse("http://192.168.1.24:5000/authenticate"),
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode({'candidateKey': otp, 'phone': phone}));
+        print('this is respomse');
+
+        var body = json.decode(respones.body);
+        print("Body:" + body);
+      } else {
+        print("Wrong OTP or Unable to Login");
+      }
+    }
+
+
+
+//{================BASIC INFORMATION SECTION=====================}
+Container(
+      width: double.infinity,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                "Basic Info",
+                style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 35,
+                    foreground: Paint()..shader = MyTheme.linearGradientColor),
+              )
+            ],
+          ),
+          SizedBox(height: 20),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "About you",
+                    textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
+              CustomInputField(
+                  hintText: "Enter something about yourself",
+                  borderRadius: 10,
+                  labelText: "Enter your Bio",
+                  borderColor: Colors.transparent)
+            ],
+          ),
+          SizedBox(height: 20),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Job Title",
+                  ),
+                ],
+              ),
+              CustomInputField(
+                  hintText: "Enter something about your Job",
+                  borderRadius: 50,
+                  labelText: '',
+                  borderColor: Colors.transparent)
+            ],
+          ),
+          SizedBox(height: 20),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "About you",
+                  ),
+                ],
+              ),
+              CustomInputField(
+                  hintText: "Enter something about yourself",
+                  borderRadius: 50,
+                  labelText: "",
+                  borderColor: Colors.transparent)
+            ],
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Expanded(
+            child: CustomListTile(
+              backgroundColor: Colors.black,
+              leadingText: "Educational Level",
+              titleColor: Colors.white,
+              borderRadius: 50,
+              leadingWidget: Icon(
+                Icons.school,
+                color: Colors.white,
+              ),
+              trailingWidget: widget.selectedEducation != null
+                  ? Text(
+                      widget.selectedEducation!,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    )
+                  : OnPressedButton(
+                      buttonText: "Add",
+                      buttonTextColor: Colors.white,
+                      onpressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CustomDialogBox(
+                                title: "Select your maixmum Educational Level",
+                                options: educationOptions,
+                                onOptionSelected: (option) {
+                                  setState(() {
+                                    selectedEducation = option;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                              );
+                            });
+                        print("religion dialog box opend");
+                      },
+                      buttonPadding: 15,
+                      buttonColor: Colors.transparent,
+                      buttonBorderRadius: 50,
+                      buttonIcon: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )),
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Expanded(
+            child: CustomListTile(
+              leadingText: "Religion",
+              borderRadius: 50,
+              titleColor: Colors.white,
+              backgroundColor: Colors.black,
+              leadingWidget: Icon(
+                CupertinoIcons.add_circled_solid,
+                color: Colors.white,
+              ),
+              trailingWidget: widget.selectedReligion != null
+                  ? Text(
+                      widget.selectedReligion!,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    )
+                  : OnPressedButton(
+                      buttonText: "Add",
+                      buttonTextColor: Colors.white,
+                      onpressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CustomDialogBox(
+                                title: "Select your reoligion",
+                                options: religionOptions,
+                                onOptionSelected: (option) {
+                                  setState(() {
+                                    selectedReligion = option;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                              );
+                            });
+                        print("religion dialog box opend");
+                      },
+                      buttonColor: Colors.transparent,
+                      buttonBorderRadius: 50,
+                      buttonIcon: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )),
+            ),
+          ),
+          Divider(
+            thickness: 1,
+            color: Color.fromARGB(111, 158, 158, 158),
+          ),
+        ],
+      ),
+    );
+
+
+
+
+
+
+    // ignore_for_file: use_build_context_synchronously, prefer_const_constructors
+
+import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
+import 'package:flings_flutter/components/BottomNavigationBar.dart';
+import 'package:flings_flutter/components/LoadingIcon.dart';
+import 'package:flings_flutter/routes/routes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  final storage = FlutterSecureStorage();
+  bool isLoading = true;
+
+ 
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   getInitialRoute(context);
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: FlutterSplashScreen.fadeIn(
+      backgroundColor: Colors.white,
+      
+      onInit: () {
+        debugPrint("On Init");
+      },
+      onEnd: () {
+        debugPrint("On End");
+      },
+      childWidget: SizedBox(
+        height: 500,
+        width: 500,
+        child: Image.asset("assets/images/icon.jpg"),
+      ),
+      
+      onAnimationEnd: () => debugPrint("On Fade In End"),
+      nextScreen: BottomNavigation(),
+    ));
+  }
+
+  Future<void> getInitialRoute(BuildContext context) async {
+    print("isLoaded before initState value:$isLoading");
+    final storage = FlutterSecureStorage();
+    var token;
+
+    try {
+      token = await storage.read(key: "token");
+    } catch (e) {
+      print(e.toString());
+    }
+
+    if (token != null) {
+      print("Transfer to Bottom Navigation Page....Continue...please");
+      
+    } else {
+      print("Navigate to Login Page.....Please Login ");
+      Navigator.pushNamed(context, MyRoutes.loginPage);
+    }
+
+    print("isLoaded after initState value:$isLoading");
+  }
+}
+
+
+
+onpressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UpdateProfile()));
+                            },
+
+{----------------------------USER CHATS-------------------------------}
+Column(
+        children: [
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  style: blackTextButton,
+                  onPressed: () {},
+                  child: Text(
+                    "All",
+                    style: whiteBoldText,
+                  )),
+              TextButton(
+                  style: blackTextButton,
+                  onPressed: () {},
+                  child: Text(
+                    "Read",
+                    style: whiteBoldText,
+                  )),
+              TextButton(
+                  style: blackTextButton,
+                  onPressed: () {},
+                  child: Text(
+                    "Unread",
+                    style: whiteBoldText,
+                  )),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Chats",
+                style: blackBoldText.copyWith(fontSize: 25),
+              ),
+              ActionChip(label: Icon(Icons.more_horiz))
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+              child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: ListTile(
+                        tileColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15),
+                            )),
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'https://imgs.search.brave.com/cZOIIGYKdZ_R7_epmNMJdLRz2z_7NWzYOPNPAtWwjas/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL2htZy1wcm9k/L2ltYWdlcy9yb2Jl/cnQtcGF0dGluc29u/LWFzLWJydWNlLXdh/eW5lLWJhdG1hbi1p/bi10aGUtYmF0bWFu/LTE2NDUxODcxMTQu/anBnP2Nyb3A9MC40/NzB4dzoxLjAweGg7/MC41MTB4dywwJnJl/c2l6ZT0zNjA6Kg'),
+                        ),
+                        title: Text("Bruce Bhaiya", style: whiteBoldText),
+                        subtitle: Text(
+                          "This is Gotham",
+                          style: greyNormalText.copyWith(fontSize: 12),
+                        ),
+                        trailing: Badge(
+                          
+                          label: Text("1"),
+                        ),
+                      ),
+                    );
+                  }))
+        ],
+      ),
+
+
+get job,company education about and religion data from storage
+
+      job = await storage.read(key: "Job");
+    company = await storage.read(key: "Company");
+    about = await storage.read(key: "About");
+    education = await storage.read(key: "Education");
+    religion = await storage.read(key: "Religion");
+
+
+
+
+    StreamBuilder(
+                      stream: _chat(),
+                      builder: (context, AsyncSnapshot<String> snapshot) {
+                        if (snapshot.hasData) {
+                          _chatMessages.add(snapshot.data!);
+
+                          return ListView.builder(
+                            itemCount: _chatMessages.length,
+                            itemBuilder: (context, index) {
+                              final String chatItem = _chatMessages[index];
+                              return ListTile(
+                                // user name
+                                leading: Text(
+                                  chatItem,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        return const LinearProgressIndicator();
+                      },
+                    ),
+
+
+
+
+//Chat Header Container
+
+        // Container(
+        //   height: 125,
+        //   width: double.infinity,
+        //   decoration: BoxDecoration(
+        //       color: Colors.black,
+        //       borderRadius: BorderRadius.only(
+        //           bottomLeft: Radius.circular(20),
+        //           bottomRight: Radius.circular(20))),
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //     children: [
+        //       Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           Padding(
+        //             padding: const EdgeInsets.only(left: 10),
+        //             child: Text(
+        //               "Chats",
+        //               style: whiteBoldText.copyWith(fontSize: 25),
+        //             ),
+        //           ),
+        //           Padding(
+        //             padding: const EdgeInsets.only(right: 10),
+        //             child: InkWell(
+        //                 child: Icon(
+        //               Icons.more_vert,
+        //               color: Colors.white,
+        //             )),
+        //           ),
+        //         ],
+        //       ),
+        //       ButtonBar(
+        //         alignment: MainAxisAlignment.center,
+        //         children: [
+        //           Chip(
+        //             label: Text(
+        //               "All Messages",
+        //               style: whiteBoldText,
+        //             ),
+        //             backgroundColor: Colors.black,
+        //             shape: RoundedRectangleBorder(
+        //                 borderRadius: BorderRadius.all(Radius.circular(
+        //               50,
+        //             ))),
+        //             avatar: CircleAvatar(
+        //               backgroundColor: Colors.white,
+        //               child: Text(
+        //                 "50",
+        //                 style: blackNormalText.copyWith(fontSize: 10),
+        //               ),
+        //             ),
+        //           ),
+        //           TextButton(
+        //               style: whiteTextButton,
+        //               onPressed: () {},
+        //               child: Text(
+        //                 "Read",
+        //                 style: blackBoldText,
+        //               )),
+        //           TextButton(
+        //               style: whiteTextButton,
+        //               onPressed: () {},
+        //               child: Text(
+        //                 "Unread",
+        //                 style: blackBoldText,
+        //               )),
+        //         ],
+        //       ),
+        //       SizedBox(
+        //         height: 10,
+        //       ),
+        //     ],
+        //   ),
+        // )
+
+
+
+
+
+        //profiles.map==> 
+         // profiles.map((e) {
+      //   return UpdatedProfileModel(
+      //     id: profiles[i].id,
+      //     phone: profiles[i].phone,
+      //     v: profiles[i].v,
+      //     about: profiles[i].about,
+      //     acceptedUsers: profiles[i].acceptedUsers,
+      //     blockedUsers: profiles[i].blockedUsers,
+      //     createdAt: CreatedAt(
+      //         date: DateTime.parse(profiles[i].createdAt!.date.toString())),
+      //     extra: Extra(
+      //       about: profiles[i].extra!.about,
+      //       job: profiles[i].extra!.job,
+      //       company: profiles[i].extra!.company,
+      //       education: profiles[i].extra!.education,
+      //       religion: profiles[i].extra!.religion,
+      //       drinking: profiles[i].extra!.drinking,
+      //       smoking: profiles[i].extra!.smoking,
+      //       workout: profiles[i].extra!.workout,
+      //       diet: profiles[i].extra!.diet,
+      //       socialMedia: profiles[i].extra!.socialMedia,
+      //     ),
+      //     filterPref: FilterPref(
+      //       advanced: Advanced(
+      //         currentCity: profiles[i].filterPref!.advanced!.currentCity,
+      //         diet: profiles[i].filterPref!.advanced!.diet,
+      //         drinking: profiles[i].filterPref!.advanced!.drinking,
+      //         education: profiles[i].filterPref!.advanced!.education,
+      //         height: profiles[i].filterPref!.advanced!.height,
+      //         hometown: profiles[i].filterPref!.advanced!.hometown,
+      //         political: profiles[i].filterPref!.advanced!.political,
+      //         religion: profiles[i].filterPref!.advanced!.religion,
+      //         smoking: profiles[i].filterPref!.advanced!.smoking,
+      //         socialMedia: profiles[i].filterPref!.advanced!.socialMedia,
+      //         workout: profiles[i].filterPref!.advanced!.workout,
+      //       ),
+      //       basic: Basic(
+      //         ageRange: profiles[i].filterPref!.basic!.ageRange,
+      //         distance: profiles[i].filterPref!.basic!.distance,
+      //       ),
+      //     ),
+      //     location: Location(
+      //       type: profiles[i].location!.type,
+      //       coordinates: profiles[i].location!.coordinates,
+      //     ),
+      //     otp: Otp(
+      //       value: profiles[i].otp!.value,
+      //       generatedAt: CreatedAt(
+      //           date: DateTime.parse(profiles[i].otp!.generatedAt.toString())),
+      //     ),
+      //     premium: Premium(
+      //       enabled: profiles[i].premium!.enabled,
+      //       msg: profiles[i].premium!.msg,
+      //     ),
+      //     profileStatus: profiles[i].profileStatus,
+      //     rejectedUsers: profiles[i].rejectedUsers,
+      //     updatedAt: CreatedAt(date: DateTime.now()),
+      //     dob: CreatedAt(date: DateTime.parse(profiles[i].dob.toString())),
+      //     gender: profiles[i].gender,
+      //     name: profiles[i].name,
+      //     orientation: profiles[i].orientation,
+      //   );
+      // });
+
+
+
+      UpdatedProfileModel demo Schema
+
+      UpdatedProfileModel(
+      id: Id(oid: "id1"),
+      phone: "1234567890",
+      v: 1,
+      about: "About user 1",
+      acceptedUsers: [],
+      blockedUsers: [],
+      createdAt: CreatedAt(date: DateTime.parse("2023-01-01")),
+      extra: Extra(
+        about: "Extra about user 1",
+        job: "Engineer",
+        company: "Company 1",
+        education: "Education 1",
+        religion: "Religion 1",
+        drinking: "Occasionally",
+        smoking: "Never",
+        workout: "Regularly",
+        diet: "Vegetarian",
+        socialMedia: "user1_social",
+      ),
+      filterPref: FilterPref(
+        advanced: Advanced(
+          currentCity: ["City1"],
+          diet: ["Vegetarian"],
+          drinking: ["Occasionally"],
+          education: ["Bachelor"],
+          height: "170cm",
+          hometown: ["Hometown1"],
+          political: ["Liberal"],
+          religion: ["Religion 1"],
+          smoking: ["Never"],
+          socialMedia: ["user1_social"],
+          workout: ["Regularly"],
+        ),
+        basic: Basic(
+          ageRange: [25, 30],
+          distance: 50,
+        ),
+      ),
+      location: Location(
+        type: "Point",
+        coordinates: [10.0, 20.0],
+      ),
+      otp: Otp(
+        value: "1234",
+        generatedAt: CreatedAt(date: DateTime.parse("2023-01-01")),
+      ),
+      premium: Premium(
+        enabled: "true",
+        msg: 100,
+      ),
+      profileStatus: 1,
+      rejectedUsers: [],
+      updatedAt: CreatedAt(date: DateTime.now()),
+      dob: CreatedAt(date: DateTime.parse("1995-01-01")),
+      gender: "Male",
+      name: "User 1",
+      orientation: "Straight",
+    ),
+
+    FutureBuilder(
+      future: getMatchingPeopleList(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text("There is an Error in Snapshot:${snapshot.error}"),
+          );
+        }
+        List<ProfileModel> profileModel = snapshot.data!;
+        return ListView.builder(
+          itemCount: matchedPeopleArray.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Container(
+                height: 250,
+                width: 200,
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://imgs.search.brave.com/PtyH8zpkcZDkIU4CRdve3CmhMWW0i5oZ0r5tEvanXKA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/d2FsbHBhcGVyc2Fm/YXJpLmNvbS8xLzUw/L2N4VDU5ei5qcGc"),
+                        fit: BoxFit.cover)),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              matchedPeopleArray[index].name!,
+                              style: whiteBoldText.copyWith(fontSize: 20),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              matchedPeopleArray[index].gender!,
+                              style: whiteNoramlText.copyWith(fontSize: 10),
+                            )
+                          ],
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.more_vert),
+                          color: Colors.white,
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  backgroundColor: Colors.black,
+                                  child: CallingOptionDropDown(),
+                                );
+                              },
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
